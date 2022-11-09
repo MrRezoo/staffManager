@@ -6,11 +6,17 @@ name = "pypi"
 [packages]
 django = "*"
 psycopg2 = "*"
+django-rest-framework = "*"
+djangorestframework-simplejwt = "*"
+djoser = "*"
 
 [dev-packages]
 markdown = "*"
 django-debug-toolbar = "*"
 django-extensions = "*"
+ipython = "*"
+black = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.10"
