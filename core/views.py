@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
+from django.views.generic import ListView
 
 from core.forms import UserRegistrationForm, UserLoginForm, ProfileForm
 
@@ -56,7 +57,7 @@ class UserLogout(LoginRequiredMixin, View):
     def get(request):
         logout(request)
         messages.success(request, "you logged out successfully")
-        return redirect("search")
+        return redirect("core:home")
 
 
 class UserDashboard(LoginRequiredMixin, View):
@@ -75,3 +76,11 @@ class UserDashboard(LoginRequiredMixin, View):
             form.save()
             messages.success(request, "your profile updated successfully", "info")
             return redirect("core:dashboard", request.user.username)
+
+
+class UserListView(ListView):
+    model = User
+    queryset = User.objects.select_related("profile").all()
+    template_name = "core/users.html"
+    context_object_name = "user_list"
+    ordering = ("id",)

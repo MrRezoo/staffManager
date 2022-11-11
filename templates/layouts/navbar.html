@@ -11,8 +11,8 @@
                     <a class="nav-item nav-link" href="{% url 'core:login' %}">Login</a>
                     <a class="nav-item nav-link" href="{% url 'core:register' %}">Register</a>
                 {% endif %}
-                {% if request.user.is_superuser %}
-                    <a class="nav-item nav-link" href="{% url 'core:bucket_home' %}">Bucket</a>
+                {% if request.user.is_superuser or request.user.staff_type == "HRA" %}
+                    <a class="nav-item nav-link" href="{% url 'core:users' %}">List of Users</a>
                 {% endif %}
             </div>
         </div>

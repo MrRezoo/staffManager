@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+
+{% block title-head %}
+    <div class="text-center">
+        Users List
+    </div>
+{% endblock title-head %}
+
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">User id</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Staff Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if user_list %}
+            {% for user in user_list %}
+                <tr>
+                    <th scope="row"><a href="{{ user.get_absolute_url }}">{{ user.id }}</a></th>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.get_staff_type_display }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <p>There are no users in the db</p>
+        {% endif %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+

@@ -39,6 +39,11 @@ class User(ModificationMixin, AbstractUser):
         default=StaffTypes.NORMAL_STAFF,
     )
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse("core:dashboard", args=[self.username])
+
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"

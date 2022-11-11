@@ -10,7 +10,7 @@
 
 
 {% block content %}
-    {% if request.user.is_superuser or request.user.staff_type == "HRA" %}
-        <a class="nav-item nav-link" href="{% url 'core:bucket_home' %}"></a>
-    {% endif %}
+{#    {% if request.user.is_superuser or request.user.staff_type == "HRA" %}#}
+{#        <a class="nav-item nav-link" href="{% url 'core:bucket_home' %}"></a>#}
+{#    {% endif %}#}
 {% endblock %}
