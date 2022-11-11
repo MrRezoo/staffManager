@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Permission
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,10 +10,27 @@ from hr.validators import is_valid_iran_code
 
 
 class User(ModificationMixin, AbstractUser):
+    username_validator = UnicodeUsernameValidator()
+
     class StaffTypes(models.TextChoices):
         NORMAL_STAFF = "NS", "Normal Staff"
         HR_ADMIN = "HRA", "HR Admin"
         SALARY_ADMIN = "SA", "Salary Admin"
+
+    username = models.CharField(
+        _("username"),
+        max_length=150,
+        unique=True,
+        null=True,
+        help_text=_(
+            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
+    email = models.EmailField(unique=True)
 
     staff_type = models.CharField(
         _("Types"),

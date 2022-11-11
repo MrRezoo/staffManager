@@ -41,6 +41,12 @@ class NormalStaff(User):
             ("view_salary", "Can view salary"),
         ]
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.StaffTypes = User.StaffTypes.NORMAL_STAFF
+            self.is_staff = True
+        return super().save(self, *args, **kwargs)
+
 
 class HRAdmin(User):
     objects = HRAdminManger()
