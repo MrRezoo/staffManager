@@ -42,7 +42,7 @@ class User(ModificationMixin, AbstractUser):
     def get_absolute_url(self):
         from django.urls import reverse
 
-        return reverse("core:dashboard", args=[self.username])
+        return reverse("core:profile", args=[self.username])
 
     @property
     def full_name(self):

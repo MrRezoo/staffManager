@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-l@128+ro*(yg0j9fr1t(=!5$k&_%1d8pc=o68+lbtlpf=cf$3g"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -157,3 +157,5 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "hr.User"
+
+CELERY_BROKER_URL = "redis://localhost:6379/1"

@@ -1,8 +1,11 @@
 # Create your views here.
 from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView
 
@@ -60,24 +63,35 @@ class UserLogout(LoginRequiredMixin, View):
         return redirect("core:home")
 
 
-class UserDashboard(LoginRequiredMixin, View):
-    template_name = "core/dashboard.html"
+class UserProfile(LoginRequiredMixin, View):
+    template_name = "core/profile.html"
     form_class = ProfileForm
 
     def get(self, request, username):
-        user = get_object_or_404(User, username=username)
+        if request.user.staff_type == "HRA":
+            user = get_object_or_404(User, username=username)
+        else:
+            if request.user.username != username:
+                raise PermissionDenied
+            user = get_object_or_404(User, username=request.user.username)
         return render(
             request, self.template_name, {"user": user, "form": self.form_class}
         )
 
+    @method_decorator(permission_required("hr.change_profile", raise_exception=True))
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, instance=request.user.profile)
+        user = get_object_or_404(User, **kwargs)
+        form = self.form_class(request.POST, instance=user.profile)
         if form.is_valid():
             form.save()
             messages.success(request, "your profile updated successfully", "info")
-            return redirect("core:dashboard", request.user.username)
+            return redirect("core:profile", user.username)
 
 
+@method_decorator(
+    permission_required(["hr.view_profile", "hr.change_profile"], raise_exception=True),
+    name="get",
+)
 class UserListView(ListView):
     model = User
     queryset = User.objects.select_related("profile").all()

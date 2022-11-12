@@ -9,6 +9,8 @@ psycopg2 = "*"
 django-rest-framework = "*"
 djangorestframework-simplejwt = "*"
 djoser = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 markdown = "*"

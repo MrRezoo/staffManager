@@ -1,3 +1,2 @@
-# Staff Manager for sooton ;_)
-
+# Staff Manager
 
